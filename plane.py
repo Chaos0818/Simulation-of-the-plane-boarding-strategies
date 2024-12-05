@@ -156,7 +156,8 @@ class PlaneModel(Model):
         'Back-to-front (4 groups)': methods.back_to_front_gr,
         'Window-Middle-Aisle': methods.win_mid_ais,
         'Steffen Perfect': methods.steffen_perfect,
-        'Steffen Modified': methods.steffen_modified
+        'Steffen Modified': methods.steffen_modified,
+        'our method': methods.optimized_boarding,
     }
 
     def __init__(self, method, shuffle_enable=True, common_bags='normal'):

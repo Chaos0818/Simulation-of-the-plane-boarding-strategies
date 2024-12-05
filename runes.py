@@ -17,9 +17,10 @@ method_types = [
     'Back-to-front (4 groups)',
     'Window-Middle-Aisle',
     'Steffen Perfect',
-    'Steffen Modified'
+    'Steffen Modified',
+    'our method'
 ]
-colors = ["blue", "red", "purple", "yellow", "green", "cyan", "gold", "magenta"]
+colors = ["blue", "red", "purple", "yellow", "green", "cyan", "gold", "magenta", "pink"]
 plot_design = []
 
 for i in method_types:
@@ -51,7 +52,8 @@ plt.legend(['Random',
             'Back to front (4 groups)',
             'Window-Middle-Aisle',
             'Steffen Perfect',
-            'Steffen Modified'])
+            'Steffen Modified',
+            'our method'])
 plt.xlabel('Time')
 plt.ylabel('Density')
 plt.show()

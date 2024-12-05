@@ -240,3 +240,73 @@ def steffen_modified(model):
             group.append(agent)
     model.random.shuffle(group)
     model.boarding_queue.extend(group)
+
+    # [3, 18]
+    # 16*0.2 = 3
+
+def optimized_boarding(model):
+    group = []
+    id = 1
+    # 80%
+    for x in range(3, 16, 2):
+        for y in (2, 1, 0):
+            agent = plane.PassengerAgent(id, model, (x, y), 1)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(3, 16, 2):
+        for y in (4, 5, 6):
+            agent = plane.PassengerAgent(id, model, (x, y), 1)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(4, 16, 2):
+        for y in (2, 1, 0):
+            agent = plane.PassengerAgent(id, model, (x, y), 1)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(4, 16, 2):
+        for y in (4, 5, 6):
+            agent = plane.PassengerAgent(id, model, (x, y), 1)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    #20%
+    for x in range(16, 19, 2):
+        for y in (2, 1, 0):
+            agent = plane.PassengerAgent(id, model, (x, y), 2)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(16, 19, 2):
+        for y in (4, 5, 6):
+            agent = plane.PassengerAgent(id, model, (x, y), 2)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(17, 19, 2):
+        for y in (2, 1, 0):
+            agent = plane.PassengerAgent(id, model, (x, y), 2)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
+    group = []
+    for x in range(17, 19, 2):
+        for y in (4, 5, 6):
+            agent = plane.PassengerAgent(id, model, (x, y), 2)
+            id += 1
+            group.append(agent)
+    model.random.shuffle(group)
+    model.boarding_queue.extend(group)
