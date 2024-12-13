@@ -359,3 +359,35 @@ def map_shortest_path_boarding(model):
 
     # 将排序后的乘客添加到登机队列
     model.boarding_queue = [p[0] for p in passengers]
+
+def dp_boarding(model):
+    # 获取所有座位
+    seats = [(row, col) for row in range(3, 19) for col in (0, 1, 2, 4, 5, 6)]
+    num_seats = len(seats)
+    
+    # 初始化DP表
+    dp = [float('inf')] * (num_seats + 1)
+    dp[0] = 0  # 没有乘客时初始化为0
+
+    # 计算每个座位到唯一登机口的距离
+    distances = {seat: calculate_time((0, 3), seat) for seat in seats}
+    
+    # 根据距离对座位进行排序
+    sorted_seats = sorted(distances, key=distances.get, reverse=True)
+    
+    # 填充DP表
+    for i, seat in enumerate(sorted_seats, start=1):
+        dp[i] = dp[i-1] + distances[seat]
+    
+    # 重建最优解
+    optimal_path = []
+    total_time = dp[-1]
+    for i in range(num_seats, 0, -1):
+        optimal_path.append(sorted_seats[i-1])
+    
+    # 创建PassengerAgent实例并添加到登机队列
+    model.boarding_queue = [plane.PassengerAgent(idx+1, model=model, seat_pos=seat, group=1) for idx, seat in enumerate(optimal_path)]
+
+def calculate_time(boarding_point, seat):
+    # 计算从登机口到座位的时间
+    return abs(boarding_point[0] - seat[0]) + abs(boarding_point[1] - seat[1])

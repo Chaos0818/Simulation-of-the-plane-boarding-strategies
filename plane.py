@@ -158,7 +158,8 @@ class PlaneModel(Model):
         'Steffen Perfect': methods.steffen_perfect,
         'Steffen Modified': methods.steffen_modified,
         'our method': methods.optimized_boarding,
-        'map_shortest_path_boarding': methods.map_shortest_path_boarding
+        'map_shortest_path_boarding': methods.map_shortest_path_boarding,
+        'dp_boarding': methods.dp_boarding,
     }
 
     def __init__(self, method, shuffle_enable=True, common_bags='normal'):
