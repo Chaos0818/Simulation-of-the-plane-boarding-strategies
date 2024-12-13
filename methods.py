@@ -310,3 +310,52 @@ def optimized_boarding(model):
             group.append(agent)
     model.random.shuffle(group)
     model.boarding_queue.extend(group)
+
+import heapq
+
+def map_shortest_path_boarding(model):
+    # 创建图的邻接表
+    graph = {}
+    for row in range(21):  # 包括走廊
+        for col in range(7):
+            graph[(row, col)] = []
+            if col > 0:  # 向左移动
+                graph[(row, col)].append((row, col - 1))
+            if col < 6:  # 向右移动
+                graph[(row, col)].append((row, col + 1))
+            if row > 0:  # 向前移动
+                graph[(row, col)].append((row - 1, col))
+            if row < 20:  # 向后移动
+                graph[(row, col)].append((row + 1, col))
+
+    # 使用Dijkstra算法计算最短路径
+    def dijkstra(graph, start, end):
+        distances = {node: float('inf') for node in graph}
+        distances[start] = 0
+        queue = [(0, start)]
+        while queue:
+            current_distance, current_node = heapq.heappop(queue)
+            if current_node == end:
+                return current_distance
+            for neighbor in graph[current_node]:
+                distance = current_distance + 1
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    heapq.heappush(queue, (distance, neighbor))
+        return distances[end]
+
+    # 计算每个乘客的最短路径长度
+    passengers = []
+    id = 1
+    for row in range(3, 19):
+        for col in (0, 1, 2, 4, 5, 6):
+            passenger = plane.PassengerAgent(id, model, (row, col), 1)
+            id += 1
+            path_length = dijkstra(graph, (0, 3), (row, col))  # 确保(0, 3)在图中
+            passengers.append((passenger, path_length))
+
+    # 根据最短路径长度排序乘客
+    passengers.sort(key=lambda x: x[1])
+
+    # 将排序后的乘客添加到登机队列
+    model.boarding_queue = [p[0] for p in passengers]
