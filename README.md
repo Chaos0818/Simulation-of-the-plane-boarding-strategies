@@ -10,9 +10,9 @@ We added two simulation methods
   - **map_shortest_path_boarding** 
   - **dp_boarding** 
 
-一种绘图
+A drawing
   - **Average Boarding Time Plot** 
-  
+
 ## Info
 
 The aim of this project it to examine and compare various methods of boarding a plane (16 rows consisting of 6 seats each).
