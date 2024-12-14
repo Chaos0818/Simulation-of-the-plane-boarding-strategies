@@ -244,21 +244,21 @@ def steffen_modified(model):
 import heapq
 
 def map_shortest_path_boarding(model):
-    # 创建图的邻接表
+    # Creating an adjacency table for a graph
     graph = {}
-    for row in range(21):  # 包括走廊
+    for row in range(21):  # including corridors
         for col in range(7):
             graph[(row, col)] = []
-            if col > 0:  # 向左移动
+            if col > 0:  # ledt side
                 graph[(row, col)].append((row, col - 1))
-            if col < 6:  # 向右移动
+            if col < 6:  # right side
                 graph[(row, col)].append((row, col + 1))
-            if row > 0:  # 向前移动
+            if row > 0:  # front
                 graph[(row, col)].append((row - 1, col))
-            if row < 20:  # 向后移动
+            if row < 20:  # back
                 graph[(row, col)].append((row + 1, col))
 
-    # 使用Dijkstra算法计算最短路径
+    # Calculate the shortest path using Dijkstra's algorithm
     def dijkstra(graph, start, end):
         distances = {node: float('inf') for node in graph}
         distances[start] = 0
@@ -274,42 +274,42 @@ def map_shortest_path_boarding(model):
                     heapq.heappush(queue, (distance, neighbor))
         return distances[end]
 
-    # 计算每个乘客的最短路径长度
+    # Calculate the shortest path length for each passenger
     passengers = []
     id = 1
     for row in range(3, 19):
         for col in (0, 1, 2, 4, 5, 6):
             passenger = plane.PassengerAgent(id, model, (row, col), 1)
             id += 1
-            path_length = dijkstra(graph, (0, 3), (row, col))  # 确保(0, 3)在图中
+            path_length = dijkstra(graph, (0, 3), (row, col))  # Ensure that (0, 3) is in the plot
             passengers.append((passenger, path_length))
 
-    # 根据最短路径长度排序乘客
+    # Sorting passengers by shortest path length
     passengers.sort(key=lambda x: x[1])
 
-    # 将排序后的乘客添加到登机队列
+    # Add sorted passengers to the boarding queue
     model.boarding_queue = [p[0] for p in passengers]
 
 def dp_boarding(model):
-    # 获取所有座位
+    # Get All Seats
     seats = [(row, col) for row in range(3, 19) for col in (0, 1, 2, 4, 5, 6)]
     num_seats = len(seats)
     
-    # 初始化DP表
+    # Initialize the DP table
     dp = [float('inf')] * (num_seats + 1)
-    dp[0] = 0  # 没有乘客时初始化为0
+    dp[0] = 0  # Initialized to 0 when there are no passengers
 
-    # 计算每个座位到唯一登机口的距离
+    # Calculate the distance from each seat to the unique gate
     distances = {seat: {"cost":calculate_time((0, 3), seat), "id":idx+1} for idx, seat in enumerate(seats)}
     
-    # 根据距离对座位进行排序
+    # Sort seats by distance
     sorted_seats = sorted(distances.items(), key=lambda d: d[1]["cost"], reverse=True)
     
-    # 填充DP表
+    # Populating the DP table
     for i, seat in enumerate(sorted_seats, start=1):
         dp[i] = dp[i-1] + distances[seat[0]]["cost"]
     
-    # 重建最优解
+    # Reconstructing the optimal solution
     optimal_path = []
     ids = []
     total_time = dp[-1]
@@ -317,22 +317,22 @@ def dp_boarding(model):
         optimal_path.append(sorted_seats[i-1][0])
         ids.append(sorted_seats[i-1][1]["id"])
     
-    # 创建PassengerAgent实例并添加到登机队列
+    # Create an instance of PassengerAgent and add it to the boarding queue
     model.boarding_queue = [plane.PassengerAgent(id, model=model, seat_pos=seat, group=1) for seat, id in zip(optimal_path,ids)]
 
 def interleave_arrays(A, B):
-    # 确保两个数组长度相同
+    # Make sure both arrays are the same length
     if len(A) != len(B):
-        raise ValueError("两个数组必须具有相同的长度")
+        raise ValueError("Both arrays must have the same length")
     
     n = len(A)
-    C = [None] * (2 * n)  # 创建一个长度为2n的新数组
+    C = [None] * (2 * n)  # Create a new array of length 2n
     
     for i in range(n):
-        C[2 * i] = A[i]     # 在偶数索引位置插入A的元素
-        C[2 * i + 1] = B[i] # 在奇数索引位置插入B的元素
+        C[2 * i] = A[i]     # Insert the elements of A at even index positions
+        C[2 * i + 1] = B[i] # Insert the elements of B at odd index positions
     
     return C
 def calculate_time(boarding_point, seat):
-    # 计算从登机口到座位的时间
+    # Calculate the time from gate to seat
     return abs(boarding_point[0] - seat[0]) + abs(boarding_point[1] - seat[1])
