@@ -157,7 +157,6 @@ class PlaneModel(Model):
         'Window-Middle-Aisle': methods.win_mid_ais,
         'Steffen Perfect': methods.steffen_perfect,
         'Steffen Modified': methods.steffen_modified,
-        'our method': methods.optimized_boarding,
         'map_shortest_path_boarding': methods.map_shortest_path_boarding,
         'dp_boarding': methods.dp_boarding,
     }
