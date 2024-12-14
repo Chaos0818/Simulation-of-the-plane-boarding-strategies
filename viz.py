@@ -58,6 +58,7 @@ bags_choice = UserSettableParameter('choice', 'Luggage Size', value='normal', ch
 server = ModularServer(PlaneModel,
                        [grid],
                        "Boarding Simulation",
-                       {"method": method_choice, "shuffle_enable": shuffle_choice, 'common_bags': bags_choice})
+                       {"method": method_choice, "shuffle_enable": shuffle_choice})
+                    #    {"method": method_choice, "shuffle_enable": shuffle_choice, 'common_bags': bags_choice})
 server.port = 8521 # The default
 server.launch()
