@@ -1,13 +1,18 @@
 #  Simulation of the plane boarding strategies
 
 ## Our contribution
+
 Here it is 2024 Fall WKU Zhang Dinggen & Bao Cheng CPS5440 project
+
 We forked it [Simulation-of-the-plane-boarding-strategies](https://github.com/Wo0kie3/Simulation-of-the-plane-boarding-strategies)
+
 We added two simulation methods
-    - **map_shortest_path_boarding** 
-    - **dp_boarding** 
+  - **map_shortest_path_boarding** 
+  - **dp_boarding** 
+
 一种绘图
-    - **Average Boarding Time Plot** 
+  - **Average Boarding Time Plot** 
+  
 ## Info
 
 The aim of this project it to examine and compare various methods of boarding a plane (16 rows consisting of 6 seats each).
