@@ -370,24 +370,39 @@ def dp_boarding(model):
     dp[0] = 0  # 没有乘客时初始化为0
 
     # 计算每个座位到唯一登机口的距离
-    distances = {seat: calculate_time((0, 3), seat) for seat in seats}
+    distances = {seat: {"cost":calculate_time((0, 3), seat), "id":idx+1} for idx, seat in enumerate(seats)}
     
     # 根据距离对座位进行排序
-    sorted_seats = sorted(distances, key=distances.get, reverse=True)
+    sorted_seats = sorted(distances.items(), key=lambda d: d[1]["cost"], reverse=True)
     
     # 填充DP表
     for i, seat in enumerate(sorted_seats, start=1):
-        dp[i] = dp[i-1] + distances[seat]
+        dp[i] = dp[i-1] + distances[seat[0]]["cost"]
     
     # 重建最优解
     optimal_path = []
+    ids = []
     total_time = dp[-1]
     for i in range(num_seats, 0, -1):
-        optimal_path.append(sorted_seats[i-1])
+        optimal_path.append(sorted_seats[i-1][0])
+        ids.append(sorted_seats[i-1][1]["id"])
     
     # 创建PassengerAgent实例并添加到登机队列
-    model.boarding_queue = [plane.PassengerAgent(idx+1, model=model, seat_pos=seat, group=1) for idx, seat in enumerate(optimal_path)]
+    model.boarding_queue = [plane.PassengerAgent(id, model=model, seat_pos=seat, group=1) for seat, id in zip(optimal_path,ids)]
 
+def interleave_arrays(A, B):
+    # 确保两个数组长度相同
+    if len(A) != len(B):
+        raise ValueError("两个数组必须具有相同的长度")
+    
+    n = len(A)
+    C = [None] * (2 * n)  # 创建一个长度为2n的新数组
+    
+    for i in range(n):
+        C[2 * i] = A[i]     # 在偶数索引位置插入A的元素
+        C[2 * i + 1] = B[i] # 在奇数索引位置插入B的元素
+    
+    return C
 def calculate_time(boarding_point, seat):
     # 计算从登机口到座位的时间
     return abs(boarding_point[0] - seat[0]) + abs(boarding_point[1] - seat[1])
