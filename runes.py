@@ -18,9 +18,11 @@ method_types = [
     'Window-Middle-Aisle',
     'Steffen Perfect',
     'Steffen Modified',
-    'our method'
+    'map_shortest_path_boarding',
+    'dp_boarding'
 ]
-colors = ["blue", "red", "purple", "yellow", "green", "cyan", "gold", "magenta", "pink"]
+average_times = []
+colors = ["blue", "red", "purple", "yellow", "green", "cyan", "gold", "magenta", "pink", "black"]
 plot_design = []
 
 for i in method_types:
@@ -34,6 +36,7 @@ for i in method_types:
     plot_design.append(common)
     average_time = mean(batch_run.get_model_vars_dataframe()['method_time'])
     print("{}: {}".format(i, average_time))
+    average_times.append(average_time)
 
 df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/diamonds.csv')
 kwargs = dict(hist_kws={'alpha':.4}, kde_kws={'linewidth':2})
@@ -53,7 +56,8 @@ plt.legend(['Random',
             'Window-Middle-Aisle',
             'Steffen Perfect',
             'Steffen Modified',
-            'our method'])
+            'map_shortest_path_boarding',
+            'dp_boarding'])
 plt.xlabel('Time')
 plt.ylabel('Density')
 plt.show()
@@ -116,4 +120,10 @@ for j in range(len(new_params2)):
     else:
         label_name = "BAG SIZE:" + " " + str(j) + " " + "avg. time:" + " " + str(average_time)
     sns.distplot(a, color=colors[j], ax=axes[j],label="Density", axlabel=label_name, hist=False)
+
+plt.show()
+
+sns.barplot(x=method_types, y=average_times)
+plt.xticks(rotation=45)
+plt.ylabel('Average Boarding Time (seconds)')
 plt.show()
