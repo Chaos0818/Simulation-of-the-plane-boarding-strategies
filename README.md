@@ -13,6 +13,12 @@ We added two simulation methods
 A drawing
   - **Average Boarding Time Plot** 
 
+Result
+![](result/board_method.png)
+Figure: Diagram of each boarding method
+![](result/avg_board_time.png)
+Figure: Diagram of Average Boarding Time
+
 ## Info
 
 The aim of this project it to examine and compare various methods of boarding a plane (16 rows consisting of 6 seats each).
